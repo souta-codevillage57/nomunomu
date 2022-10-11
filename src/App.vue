@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <!--<Menu v-if="isLogin" key='login'></Menu>-->
-    <!--<Menu v-else key='logout'></Menu>-->
+    <Menu></Menu>
     <router-view/>
   </div>
 </template>
 <script>
-// import Menu from '@/components/Menu.vue'
+import Menu from '@/components/Menu.vue'
 
 export default {
   name: 'App',
@@ -18,7 +17,7 @@ export default {
             }
   },
   components: {
-    // Menu,
+    Menu,
   },
   methods: {
   },

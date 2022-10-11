@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div class="ui width fulid center aligned grid">
-      
-    <div class="row width fluid header_container grid">
-      <div class="header_left">
-      ヘッダー
-      </div>
-      <div class="header_right">
-        
-      </div>
-    </div>
-      
     <div class="row back_ground_img_wrap">
       <div class="back_ground_img">
           <div class="ui medium image char_img_wrap">
@@ -64,8 +53,6 @@
   
     <div class="row">
       <div class="ui center button" type="submit">お薬編集</div>
-    </div>
-    
     </div>
   </div>
 </template>

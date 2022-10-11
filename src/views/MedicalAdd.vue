@@ -2,7 +2,7 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
-      <h2 class="ui dividing header">お薬追加</h2>
+      <!--h2 class="ui dividing header">お薬追加</h2-->
       
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->
@@ -24,7 +24,7 @@
             <div class="ui left icon input">
               1日に何回飲むの？
               <select v-model="selectedItem">
-                <option v-for="item in selectItems":value="item.id" :key="item.id">
+                <option v-for="item in selectItems" :value="item.id" :key="item.id">
                   {{ item.label }}
                 </option>
               </select>
