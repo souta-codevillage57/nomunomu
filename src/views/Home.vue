@@ -1,39 +1,47 @@
 <template>
   <div>
-    <div class="ui main container">
-      <!-- 基本的なコンテンツはここに記載する -->
+    <div class="ui width fulid center aligned grid">
+      <div class="row back_ground_img_wrap">
+        <div class="back_ground_img">
+            <div class="ui medium image char_img_wrap">
+              <img v-if="value=='value1'" class="char_img" src="@/assets/img/inu1.png">
+              <img v-else-if="value=='value2'" class="char_img" src="@/assets/img/inu2.png">
+              <img v-else class="char_img" src="@/assets/img/inu3.png">
+            </div>
+        </div>
+      </div>
+    
+    <div class="row" style="height:160px; width:80%;">
+      <div class="column ten wide left">
+        
+     <form class="ui form">
+       
+       <div class="field" style="display:flex;">
+        <div class="ui checkbox">
+         <input type="checkbox">
+         <label>{{med.medName}}</label>
+        </div>
+        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
+       </div>
+       
+     </form>
+
+      </div>
       
-      <!-- 投稿一覧 -->
-      <h2 class="ui dividing header">投稿一覧</h2>    
-      <div class="ui segment">
-        <ul class="ui comments divided">
-          <template v-for="(article, index) in articles">
-            <li class="comment" :key="index">
-              <div class="content">
-                <div>
-                  <span class="author">{{article.userId}}</span>
-                  <div class="metadata">
-                    <span class="date">{{ convertToLocaleString(article.timestamp) }}</span>
-                  </div>
-                  <button v-if="isMyArticle(article.userId)" class="ui right floated grey mini button" @click="deleteArticle(article)">
-                    削除
-                  </button>
-                </div>
-                <p class="text">
-                  {{article.text}}
-                </p>
-                <span class="ui green label" v-if="article.category">{{article.category}}</span>
-                <div class="ui divider"></div>
-              </div>
-            </li>
-          </template>
-        </ul>
-      </div>          
-      <!-- 投稿一覧終了-->
-      
+      <div class="column five wide right">
+        <div class="ui button">服をあげる</div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div v-on:click="MedicalEditHandler" class="ui center button" type="submit">お薬編集</div>
+    </div>
+    
     </div>
   </div>
 </template>
+
 
 <script>
 // 必要なものはここでインポートする
@@ -42,7 +50,7 @@
 import { baseUrl } from '@/assets/config.js';
 import axios from "axios";
 
-const headers = {'Authorization' : 'mtiToken'};
+// const headers = {'Authorization' : 'mtiToken'};
 
 export default {
   name: 'Home',
@@ -51,82 +59,110 @@ export default {
   },
   data() {
     // Vue.jsで使う変数はここに記述する
-    return{
-      post: {
-        text: null,
-        category: null,
-      },
-      search: {
-        userId: null,
-        category: null,
-        start: null,
-        end: null,
-      },
-      articles: [],
-      iam: null,
-      successMsg: '',
-      errorMsg: '',
-      isCallingApi: false
+    return {
+      value: "value3",
+      med:{
+        medName: "葛根湯",
+        oncemedfirsttime: "12:30",
+        userId: "takashima",
+        oncemedlasttime: "14:00",
+        medQuantity: 3,
+        medNum: 1
+      }
     };
   },
+  
   computed: {
   // 計算した結果を変数として利用したいときはここに記述する
+  //現在時刻が薬の服用時間に当てはまっているかの関数
   },
   
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    // apiからarticleを取得する
-    // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    // apiからarticleを取得する
-    try{
-      await this.getArticles();
-      console.log("GET");
-    }catch(e){
-      //エラー処理
-    }
+
+      // headerを指定する
+      const headers = {'Authorization' : 'mtiToken'};
+  
+      try{
+        const res = await axios.get(baseUrl + '/app-medicine',  { headers });
+        // 成功時の処理
+        console.log(res.data)
+        // this.med.medName =res.data.medName;
+        // this.med.oncemedfirsttime =res.data.oncemedfirsttime;
+        // this.med.userId =res.data.userId;
+        // this.med.oncemedlasttime =res.data.oncemedlasttime;
+        // this.med.medQuantity =res.data.medQuantity;
+        // this.med.medNum =res.data.medNum;
+        
+      }catch(e) {
+        // エラー時の処理
+        console.log("error")
+      }
+    
   },
 
   methods: {
     // Vue.jsで使う関数はここで記述する
-    isMyArticle(id) {
-      return this.iam === id;
-    }, // 自分の記事かどうかを判定する
-    
-    async getArticles() {
-      try{
-        const res = await axios.get(baseUrl + '/articles',  { headers });
-        this.articles = res.data;
-        console.log(this.articles);
-      }catch(e) {
-        //エラー処理
-        console.log(this.e);
-      }
-    }, 
-    
-    async deleteArticle(article) {
-      const { userId, timestamp } = article;
-      const data = {
-        userId,
-        timestamp,
-      };
-      try {
-        await axios.delete(baseUrl + '/article', { data, headers });
-      }catch(e){
-        //エラー処理
-      }
-    }, // 記事を削除する
-    
-    convertToLocaleString(timestamp) {
-      return new Date(timestamp).toLocaleString();
-    } // timestampをLocaleDateStringに変換する
+    MedicalEditHandler(){
+      this.$router.push('/medicaledit')
+    },
   }
+  
+
 }
+  
 </script>
 
 <style scoped>
-  .author {
-    font-size : large;
-    font-weight : bold;
-    text-decoration : underline;
-  } 
+
+.back_ground_img_wrap{
+  width:100vw;
+  height:400px;
+}
+
+.back_ground_img{
+  position: relative;
+  background-image:url(@/assets/img/washitsu.png);
+  background-size:cover; 
+  background-position: center;
+  background-repeat:no-repeat;
+  height:100%;
+  width:100%;
+}
+
+.char_img_wrap{
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  margin: auto;
+}
+
+
+.char_img{
+  transform: translate(-50%,-50%);
+}
+
+
+.button{
+  background-color:#0A7B83;
+  color:white;
+}
+
+.left{
+  border:solid gray 1px;
+  border-radius:8px;
+  box-shadow: 10px 5px 5px gray;
+  padding:10px;
+}
+
+
+.header_container{
+  background-color:#0A7B83;
+  color:white;
+}
+
+.medicine_label{
+  text-align:center;
+}
+
 </style>

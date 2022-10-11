@@ -4,6 +4,7 @@
       <!-- 基本的なコンテンツはここに記載する -->
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->
+        <h3>ログイン</h3>
         <form @submit.prevent="submit" class="ui large form">
           <div class="field">
             <div class="ui left icon input">
@@ -17,25 +18,13 @@
               <input v-model="user.password" type="password" placeholder="Password"/>
             </div>
           </div>
-          <div class="field" v-if="!isLogin">
-            <div class="ui left icon input">
-              <i class="tag icon"></i>
-              <input v-model="user.nickname" type="text" placeholder="Nickname"/>
-            </div>
-          </div>
-          <div class="field" v-if="!isLogin">
-            <div class="ui left icon input">
-              <i class="calendar icon"></i>
-              <input v-model.number="user.age" type="text" placeholder="Age"/>
-            </div>
-          </div>
           <button class="ui huge green fluid button" type="submit">
-            {{ submitText }}
+            ログイン
           </button>
         </form>
       </div>
-      <button @click="toggleMode()" class="ui huge grey fluid button" type="submit">
-        {{ toggleText }}
+      <button @click="toRegister()" class="ui huge grey fluid button" type="submit">
+        新規登録はこちら
       </button>
     </div>
   </div>
@@ -58,64 +47,39 @@ export default {
       isLogin: true,
       user: {
         userId: null,
-        password: null,
-        nickname: null,
-        age: null
+        password: null
       }
     };
   },
   computed: {
   // 計算した結果を変数として利用したいときはここに記述する
-    submitText(){
-      return this.isLogin ? "ログイン" : "新規登録";
-    },
-    toggleText(){
-      return this.isLogin ? "新規登録" : "ログイン";
-    }
+  },
+  created: async function() {
+    // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
+    // apiからarticleを取得する
   },
   methods: {
   // Vue.jsで使う関数はここで記述する
-    toggleMode(){
-      this.isLogin = !this.isLogin;
+    toRegister(){
+      this.$router.push({name: 'UserReg'});
     },
-    
     async submit(){
-      if(!this.isLogin){
-        const requestBody = {
-          userId: this.user.userId,
-          password: this.user.password,
-          nickname: this.user.nickname,
-          age: this.user.age
-        };
-      
-        try {
-          const res = await axios.post(baseUrl + '/user/signup', requestBody);
-          console.log('signup');
-          console.log(res.data);
-        }catch(e){
-          console.log('error')
-        }
-        return;
+      const requestBody = {
+        userId: this.user.userId,
+        password: this.user.password,
+      };
+    
+      try {
+        const res = await axios.post(baseUrl + '/app-user/login', requestBody);
+        console.log('login');
+        
+        window.localStorage.setItem('token', res.data.token);
+        window.localStorage.setItem('userId', this.user.userId);
+        this.$router.push({name: 'Home'});
+      }catch(e){
+        console.log('error')
       }
-      
-      if(this.isLogin){
-        const requestBody = {
-          userId: this.user.userId,
-          password: this.user.password,
-        };
-      
-        try {
-          const res = await axios.post(baseUrl + '/user/login', requestBody);
-          console.log('login');
-          
-          window.localStorage.setItem('token', res.data.token);
-          window.localStorage.setItem('userId', this.user.userId);
-          this.$router.push({name: 'Home'});
-        }catch(e){
-          console.log('error')
-        }
-        return;
-      }
+      return;
     }
   }
 }
