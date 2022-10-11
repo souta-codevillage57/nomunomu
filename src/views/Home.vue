@@ -31,8 +31,8 @@
             <input disabled type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
             <label>{{med.medName}}</label>
           </div>
-          <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-          <div style="margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
+          <div style="color:gray; margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="color:gray; margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
         </div>
         
        </template>
