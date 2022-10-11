@@ -106,6 +106,7 @@ export default {
         // 成功時の処理
         console.log('updated user information');
         console.log(res.data);
+        this.$router.push({name: "Home"});
       }catch(e){
         // エラー時の処理
         console.log('error in submit');
