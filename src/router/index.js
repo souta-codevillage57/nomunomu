@@ -4,6 +4,9 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import User from '../views/User.vue'
+import MedicalEdit from '../views/MedicalEdit.vue'
+import MedicalAdd from '../views/MedicalAdd.vue'
+import MedicalUpdate from '../views/MedicalUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +30,21 @@ const routes = [
     path: '/user',
     name: 'User',
     component: User
+  },
+  {
+    path: '/medicaledit',
+    name: 'MedicalEdit',
+    component: MedicalEdit
+  },
+  {
+    path: '/medicaladd',
+    name: 'MedicalAdd',
+    component: MedicalAdd
+  },
+  {
+    path: '/medicalupdate',
+    name: 'MedicalUpdate',
+    component: MedicalUpdate
   }
 ]
 
