@@ -15,15 +15,14 @@
       <div class="column ten wide left">
         
      <form class="ui form">
-       <template v-for="(med, index) in meds">
-         
-        <div v-if="isNotOver(med)" class="field" style="display:flex;" :key="index">
+       <template v-for="(med, index) in all_meds">
+        <div class="field" style="display:flex;" :key="index">
           <div class="ui checkbox">
             <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
             <label>{{med.medName}}</label>
           </div>
           <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-          <div style="margin-left:30px">{{med.oncemedfirsttime}} 時から {{med.oncemedlasttime}} 時まで</div>
+          <div style="margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
         </div>
         
         <div v-if="isOver(med)" class="field" style="display:flex;" :key="index">
@@ -73,6 +72,7 @@ export default {
     return {
       checkCount:0,
       flag:false,
+      all_meds:[],
       meds:[],
       med:{
         medName: null,
@@ -114,12 +114,45 @@ export default {
         this.meds = res.data.userMeds;
         // 成功時の処理
         console.log(this.meds)
-        // this.med.medName =res.data.medName;
-        // this.med.oncemedfirsttime =res.data.oncemedfirsttime;
-        // this.med.userId =res.data.userId;
-        // this.med.oncemedlasttime =res.data.oncemedlasttime;
-        // this.med.medQuantity =res.data.medQuantity;
-        // this.med.medNum =res.data.medNum;
+        
+        for (var value of this.meds.values()) {
+          console.log("value")
+          console.log(value.medName)
+          if(value.medNum >= 1){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: value.oncemedfirsttime,
+              end: value.oncemedlasttime
+            };
+            this.all_meds.push(med);
+          }
+          if(value.medNum >= 2){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: value.twicemedfirsttime,
+              end: value.twicemedlasttime
+            };
+            this.all_meds.push(med);
+          }
+          if(value.medNum >= 3){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: value.thircemedfirsttime,
+              end: value.thircemedlasttime
+            };
+            this.all_meds.push(med);
+          }
+        }
+        console.log(this.all_meds);
         
       }catch(e) {
         // エラー時の処理
