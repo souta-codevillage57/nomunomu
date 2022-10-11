@@ -59,7 +59,6 @@ export default {
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
-    this.$router.push({name: "MedicalEdit"});
   },
   methods: {
   // Vue.jsで使う関数はここで記述する

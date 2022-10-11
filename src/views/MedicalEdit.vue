@@ -4,7 +4,7 @@
       <!-- 基本的なコンテンツはここに記載する -->
       
       <!-- お薬一覧 -->
-      <!--h2 class="ui dividing header">お薬編集</h2-->    
+      <h2>お薬編集</h2>    
       <div class="ui segment">
         <ul class="ui comments divided">
           <template v-for="(med, index) in meds">
@@ -59,19 +59,18 @@ export default {
   // 計算した結果を変数として利用したいときはここに記述する
   },
   
-  created() {//: async function
+  created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
-    this.$router.push({name: "Login"})
-    //try{
+    try{
       //お薬の情報を取得する
-      //await this.getmeds();
-      //console.log("GET");
-    //}catch(e){
+      await this.getmeds();
+      console.log("GET");
+    }catch(e){
       //エラー処理
-    //}
+    }
   },
 
   methods: {

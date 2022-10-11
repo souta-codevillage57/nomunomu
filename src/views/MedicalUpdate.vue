@@ -3,7 +3,7 @@
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
       <!--h2 class="ui dividing header">お薬更新</h2-->
-      
+      <h2>お薬更新</h2>
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->
         <form @submit.prevent="submit" class="ui large form">
