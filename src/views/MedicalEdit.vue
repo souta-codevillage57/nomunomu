@@ -56,7 +56,7 @@ export default {
     return{
       // userId: window.localStrage.getItem('userId'),
       meds: {
-        userId: '',
+        userId: window.localStorage.getItem('userId'),
         medName: '',
         medQuantity: '',
         medNum: '',

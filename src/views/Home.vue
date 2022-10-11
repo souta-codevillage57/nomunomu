@@ -110,7 +110,11 @@ export default {
       const headers = {'Authorization' : 'mtiToken'};
   
       try{
-        const res = await axios.get(baseUrl + `/app-medicine?userId=${this.med.userId}&medName=${this.med.medName}`,  { headers });
+        // const headers = {'Authorization' : 'mtiToken'};
+        const userId = 'takashima';
+        
+        const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
+        this.meds = res.data.userMeds;
         // 成功時の処理
         console.log(res.data)
         // this.med.medName =res.data.medName;
