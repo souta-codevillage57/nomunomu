@@ -167,6 +167,11 @@ export default {
         // 成功時の処理
         console.log('update med information');
         console.log(res.data);
+        
+        //お薬の情報を更新すると一覧に飛ぶ
+        if (res) {
+          this.$router.push({name: "MedicalEdit"});
+        }
       }catch(e){
         // エラー時の処理
         console.log('error in submit');

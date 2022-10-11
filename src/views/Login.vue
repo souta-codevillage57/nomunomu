@@ -57,7 +57,6 @@ export default {
   // 計算した結果を変数として利用したいときはここに記述する
   },
   created: async function() {
-    this.$router.push({name: "MedicalEdit"});
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
   },
