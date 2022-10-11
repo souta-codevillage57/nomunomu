@@ -4,14 +4,14 @@
       <!-- 基本的なコンテンツはここに記載する -->
       
       <!-- お薬一覧 -->
-      <h2>お薬編集</h2>    
+      <h2 class="ui dividing header">お薬編集</h2>    
       <div class="ui segment">
         <ul class="ui comments divided">
           <template v-for="(med, index) in meds">
             <li class="comment" :key="index">
               <div class="content">
                 <div>
-                  <span class="author">{{med.medname}}</span>
+                  <span class="author">{{med.medName}}</span>
                   <button class="ui right floated grey mini button" @click="updatemed()">
                     更新
                   </button>
@@ -25,9 +25,11 @@
         </ul>
       </div>          
       <!-- お薬一覧終了-->
-      <button class="ui floated grey mini button" @click="addmed()">
-        追加
-      </button>
+      <div class="addbtn">
+        <button class="ui floated grey mini button" @click="addmed()">
+          追加
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +53,16 @@ export default {
     return{
       // userId: window.localStrage.getItem('userId'),
       meds: {
-        medname: '',
+        userId: '',
+        medName: '',
+        medQuantity: '',
+        medNum: '',
+        oncemedfirsttime: '',
+        oncemedlasttime: '',
+        twicemedfirsttime: '',
+        twicemedlasttime: '',
+        thircemedfirsttime: '',
+        thircemedlasttime: '',
       },
     };
   },
@@ -70,6 +81,7 @@ export default {
       console.log("GET");
     }catch(e){
       //エラー処理
+      console.log(this.e);
     }
   },
 
@@ -79,8 +91,11 @@ export default {
     async getmeds() {
       try{
         //お薬の情報を取得するapi
-        const res = await axios.get(baseUrl + `/med?userId=${this.userId}`,  { headers });
-        this.meds = res.data;
+        const headers = {'Authorization' : 'mtiToken'};
+        const userId = 'takashima';
+        
+        const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
+        this.meds = res.data.userMeds;
         console.log(this.meds);
       }catch(e) {
         //エラー処理
@@ -89,13 +104,16 @@ export default {
     }, 
     
     async deletemed(med) {
-      const { medname } = med;
+      const {userId } = 'takashima';
+      const { medName } = med;
       const data = {
-        medname
+        userId,
+        medName
       };
       try {
         //お薬の情報を削除するapi
-        await axios.delete(baseUrl + '/med', { data, headers });
+        const res = await axios.delete(baseUrl + '/app-medicine', { data, headers });
+        console.log(res);
       }catch(e){
         //エラー処理
       }
@@ -117,5 +135,9 @@ export default {
     font-size : large;
     font-weight : bold;
     text-decoration : underline;
-  } 
+  }
+  
+  .addbtn {
+    text-align : center;
+  }
 </style>
