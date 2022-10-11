@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import User from '../views/User.vue'
+import UserReg from '../views/UserReg.vue'
+import UserSet from '../views/UserSet.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/user',
     name: 'User',
     component: User
+  },
+  {
+    path: '/userreg',
+    name: 'UserReg',
+    component: UserReg
+  },
+  {
+    path: '/userset',
+    name: 'UserSet',
+    component: UserSet
   }
 ]
 
