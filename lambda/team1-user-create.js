@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
-const TableName = "User";
+const TableName = "team1-User";
 
 exports.handler = async (event, context) => {
   const response = {
