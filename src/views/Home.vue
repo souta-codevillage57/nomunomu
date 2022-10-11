@@ -16,9 +16,10 @@
         
      <form class="ui form">
        <template v-for="(med, index) in all_meds">
-        <div class="field" style="display:flex;" :key="index">
+         
+        <div v-if="!isOver(med)" class="field" style="display:flex;" :key="index">
           <div class="ui checkbox">
-            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
+            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = false;">
             <label>{{med.medName}}</label>
           </div>
           <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -31,7 +32,7 @@
             <label>{{med.medName}}</label>
           </div>
           <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-          <div style="margin-left:30px">{{med.oncemedfirsttime}} 時から {{med.oncemedlasttime}} 時まで</div>
+          <div style="margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
         </div>
         
        </template>
@@ -82,21 +83,10 @@ export default {
         medQuantity: null,
         medNum: null
       },
-      nowtime: '',
     };
   },
   
   computed: {
-    isNotOver(med) {
-      console.log(med)
-      console.log( this.nowtime.getHours())
-      return med.oncemedfirsttime > this.nowtime.getHours();
-    },
-    isOver(med) {
-      console.log(med.oncemedfirsttime)
-      console.log( this.nowtime.getHours())
-      return med.oncemedfirsttime < this.nowtime.getHours();
-    },
   },
   
   created: async function() {
@@ -112,20 +102,17 @@ export default {
         console.log(userId)
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
-        // 成功時の処理
-        console.log(this.meds)
         
+        // 成功時の処理
         for (var value of this.meds.values()) {
-          console.log("value")
-          console.log(value.medName)
           if(value.medNum >= 1){
             const med = {
               userId,
               medName: value.medName,
               medQuantity: value.medQuantity,
               medNum: value.medNum,
-              start: value.oncemedfirsttime,
-              end: value.oncemedlasttime
+              start: Number(value.oncemedfirsttime),
+              end: Number(value.oncemedlasttime)
             };
             this.all_meds.push(med);
           }
@@ -135,8 +122,8 @@ export default {
               medName: value.medName,
               medQuantity: value.medQuantity,
               medNum: value.medNum,
-              start: value.twicemedfirsttime,
-              end: value.twicemedlasttime
+              start: Number(value.twicemedfirsttime),
+              end: Number(value.twicemedlasttime)
             };
             this.all_meds.push(med);
           }
@@ -146,14 +133,23 @@ export default {
               medName: value.medName,
               medQuantity: value.medQuantity,
               medNum: value.medNum,
-              start: value.thircemedfirsttime,
-              end: value.thircemedlasttime
+              start: Number(value.thircemedfirsttime),
+              end: Number(value.thircemedlasttime)
             };
             this.all_meds.push(med);
           }
         }
+        this.all_meds.sort(function(a,b){
+          if(a.start < b.start) return -1;
+          else if(a.start > b.start) return 1;
+          else if(a.start == b.start){
+            if(a.end < b.end) return -1;
+            else if(a.end > b.end) return 1;
+          }
+          return 0;
+        });
+        console.log("all_meds")
         console.log(this.all_meds);
-        
       }catch(e) {
         // エラー時の処理
         console.log("error")
@@ -163,6 +159,10 @@ export default {
 
   methods: {
     // Vue.jsで使う関数はここで記述する
+    isOver(med) {
+      const now = new Date();
+      return (med.end < now.getHours());
+    },
     
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
@@ -176,11 +176,7 @@ export default {
       }
       console.log(this.checkCount);
     }
-    
   }
-  
-  
-
 }
   
 </script>
