@@ -16,14 +16,14 @@
         
      <form class="ui form">
        <template v-for="(med, index) in meds">
-       <div class="field" style="display:flex;" :key="index">
-        <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
-         <label>{{med.medName}}</label>
+        <div class="field" style="display:flex;" :key="index">
+          <div class="ui checkbox">
+            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
+            <label>{{med.medName}}</label>
+          </div>
+          <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="margin-left:30px">{{med.oncemedfirsttime}} 時から {{med.oncemedlasttime}} 時まで</div>
         </div>
-        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
-       </div>
        </template>
        
      </form>
@@ -66,12 +66,12 @@ export default {
       flag:false,
       meds:[],
       med:{
-        medName: "葛根湯",
-        oncemedfirsttime: "12:30",
-        userId: "takashima",
-        oncemedlasttime: "14:00",
-        medQuantity: 3,
-        medNum: 1
+        medName: null,
+        oncemedfirsttime: null,
+        userId: window.localStorage.getItem('userId'),
+        oncemedlasttime: null,
+        medQuantity: null,
+        medNum: null
       }
     };
   },
@@ -88,13 +88,12 @@ export default {
       const headers = {'Authorization' : 'mtiToken'};
   
       try{
-        // const headers = {'Authorization' : 'mtiToken'};
-        const userId = 'takashima';
-        
+        const userId = this.med.userId;
+        console.log(userId)
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
         // 成功時の処理
-        console.log(res.data)
+        console.log(this.meds)
         // this.med.medName =res.data.medName;
         // this.med.oncemedfirsttime =res.data.oncemedfirsttime;
         // this.med.userId =res.data.userId;

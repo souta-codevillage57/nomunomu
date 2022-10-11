@@ -55,17 +55,18 @@ export default {
     // Vue.jsで使う変数はここに記述する
     return{
       // userId: window.localStrage.getItem('userId'),
-      meds: {
+      meds: [],
+      med: {
         userId: window.localStorage.getItem('userId'),
-        medName: '',
-        medQuantity: '',
-        medNum: '',
-        oncemedfirsttime: '',
-        oncemedlasttime: '',
-        twicemedfirsttime: '',
-        twicemedlasttime: '',
-        thircemedfirsttime: '',
-        thircemedlasttime: '',
+        medName: null,
+        medQuantity: null,
+        medNum: null,
+        oncemedfirsttime: null,
+        oncemedlasttime: null,
+        twicemedfirsttime: null,
+        twicemedlasttime: null,
+        thircemedfirsttime: null,
+        thircemedlasttime: null,
       },
     };
   },
@@ -78,10 +79,15 @@ export default {
     // apiからarticleを取得する
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
+    const headers = {'Authorization' : 'mtiToken'};
     try{
       //お薬の情報を取得する
-      await this.getmeds();
-      console.log("GET");
+      const userId = this.med.userId;
+      console.log(userId)
+      const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
+      this.meds = res.data.userMeds;
+      // 成功時の処理
+      console.log(this.meds)
     }catch(e){
       //エラー処理
       console.log(this.e);
@@ -95,7 +101,7 @@ export default {
       try{
         //お薬の情報を取得するapi
         const headers = {'Authorization' : 'mtiToken'};
-        const userId = 'takashima';
+        const userId = this.meds.userId;
         
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
@@ -107,7 +113,7 @@ export default {
     }, 
     
     async deletemed(med) {
-      const userId = 'takashima';
+      const userId = this.meds.userId;
       const medName = med.medName;
       const data = {
         userId,
