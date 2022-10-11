@@ -30,9 +30,15 @@
                 1日に何回飲むの？
               </div>
               <select v-model="selectedItem">
+<<<<<<< HEAD
+                <!--<option v-for="item in selectItems":value="item.id" :key="item.id">-->
+                <!--  {{ item.label }}-->
+                <!--</option>-->
+=======
                 <option v-for="item in selectItems" :value="item.id" :key="item.id">
                   {{ item.label }}
                 </option>
+>>>>>>> feature/frontend
               </select>
             </div>
           </div>
