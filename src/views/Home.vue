@@ -116,18 +116,10 @@ export default {
 
   methods: {
     // Vue.jsで使う関数はここで記述する
-<<<<<<< HEAD
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
     },
-    
   }
-=======
-    medEdit(){
-      this.$router.push({name: 'MedicalEdit'});
-    },
-  },
->>>>>>> feature/frontend
   
 
 }
