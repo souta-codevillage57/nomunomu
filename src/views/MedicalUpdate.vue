@@ -2,21 +2,21 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
-      <!--h2 class="ui dividing header">お薬更新</h2-->
-      <h2>お薬更新</h2>
+      <h2 class="ui dividing header">お薬更新</h2>
+      
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->
         <form @submit.prevent="submit" class="ui large form">
           <div class="field">
             <div class="ui left icon input">
               薬の名前は何？
-              <input v-model="med.medname" required disabled type="text" placeholder="薬の名前"/>
+              <input v-model="med.medName" required disabled type="text" placeholder="薬の名前"/>
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               何錠飲むの？
-              <input v-model="med.medquantity" required type="number" placeholder="何錠"/>
+              <input v-model="med.medQuantity" required type="number" placeholder="何錠"/>
             </div>
           </div>
           <div class="field">
@@ -100,9 +100,10 @@ export default {
   // Vue.jsで使う変数はここに記述する
     return {
       // userId: window.localStrage.getItem('userId'),
+      userId: null,
       med: {
-        medname: null,
-        medquantity: null,
+        medName: null,
+        medQuantity: null,
       },
       medtime: {
         oncemedfirsttime: null,
@@ -138,13 +139,15 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const { medname, medquantity } = this.med;
-      const { mednumber } = this.selectedItem;
+      const userId = 'takashima';
+      const { medName, medQuantity } = this.med;
+      const medNum = this.selectedItem;
       const { oncemedfirsttime, oncemedlasttime, twicemedfirsttime, twicemedlasttime, thircemedfirsttime, thircemedlasttime } = this.medtime;
       const requestBody = {
-        medname,
-        medquantity,
-        mednumber,
+        userId,
+        medName,
+        medQuantity,
+        medNum,
         oncemedfirsttime,
         oncemedlasttime,
         twicemedfirsttime,
@@ -154,8 +157,7 @@ export default {
       };
       
       try {
-        console.log(requestBody);
-        const res = await axios.put(baseUrl + '/med', requestBody, { headers });
+        const res = await axios.put(baseUrl + '/app-medicine', requestBody, { headers });
         // 成功時の処理
         console.log('update med information');
         console.log(res.data);
@@ -173,21 +175,26 @@ export default {
   created: async function(){
     const headers = {'Authorization': 'mtiToken'};
     
+    const userId = 'takashima';
+    const medName = '風邪薬';
+    
     try{
-      const res = await axios.get(baseUrl + `/med?userId=${this.userId}&medname=${this.med.medname}`, { headers });
+      const res = await axios.get(baseUrl + `/app-medicine?userId=` + userId + `&medName=` + medName, { headers });
       
-      this.med.medname = res.data.medname;
-      this.med.medquantity = res.data.medquantity;
-      this.mednumber = res.data.mednumber;
-      this.oncemedfirsttime = res.data.oncemedfirsttime;
-      this.oncemedlasttime = res.data.oncemedlasttime;
-      this.twicemedfirsttime = res.data.twicemedfirsttime;
-      this.twicemedlasttime = res.data.twicemedlasttime;
-      this.thircemedfirsttime = res.data.thircemedfirsttime;
-      this.thircemedlasttime = res.data.thircemedlasttime;
+      console.log(res.data);
+      
+      this.med.medName = res.data.medName;
+      this.med.medQuantity = res.data.medQuantity;
+      this.medNumber = res.data.medNumber;
+      this.medtime.oncemedfirsttime = res.data.oncemedfirsttime;
+      this.medtime.oncemedlasttime = res.data.oncemedlasttime;
+      this.medtime.twicemedfirsttime = res.data.twicemedfirsttime;
+      this.medtime.twicemedlasttime = res.data.twicemedlasttime;
+      this.medtime.thircemedfirsttime = res.data.thircemedfirsttime;
+      this.medtime.thircemedlasttime = res.data.thircemedlasttime;
       
     }catch(e){
-      console.log('error in get')
+      console.log('error in get');
     }
   }
 }
