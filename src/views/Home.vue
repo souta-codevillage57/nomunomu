@@ -4,21 +4,21 @@
       <div class="row back_ground_img_wrap">
         <div class="back_ground_img">
             <div class="ui medium image char_img_wrap">
-              <img v-if="value=='value1'" class="char_img" src="@/assets/img/inu1.png">
-              <img v-else-if="value=='value2'" class="char_img" src="@/assets/img/inu2.png">
-              <img v-else class="char_img" src="@/assets/img/inu3.png">
+              <img v-if="checkCount>='3'" class="char_img" src="@/assets/img/inu3.png">
+              <img v-else-if="checkCount<='-1'" class="char_img" src="@/assets/img/inu1.png">
+              <img v-else class="char_img" src="@/assets/img/inu2.png">
             </div>
         </div>
       </div>
     
-    <div class="row" style="height:160px; width:80%;">
+    <div class="row" style="width:80%;">
       <div class="column ten wide left">
         
      <form class="ui form">
        
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
-         <input type="checkbox">
+         <input type="checkbox" v-on:change="CheckedFunction">
          <label>{{med.medName}}</label>
         </div>
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -60,7 +60,7 @@ export default {
   data() {
     // Vue.jsで使う変数はここに記述する
     return {
-      value: "value3",
+      checkCount:0,
       med:{
         medName: "葛根湯",
         oncemedfirsttime: "12:30",
@@ -84,7 +84,7 @@ export default {
       const headers = {'Authorization' : 'mtiToken'};
   
       try{
-        const res = await axios.get(baseUrl + '/app-medicine',  { headers });
+        const res = await axios.get(baseUrl + `/app-medicine?userId=${this.med.userId}&medName=${this.med.medName}`,  { headers });
         // 成功時の処理
         console.log(res.data)
         // this.med.medName =res.data.medName;
@@ -103,11 +103,18 @@ export default {
 
   methods: {
     // Vue.jsで使う関数はここで記述する
+    
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
     },
     
+    CheckedFunction(){
+      this.checkCount+=1;
+      console.log(this.checkCount)
+    }
+    
   }
+  
   
 
 }
@@ -150,6 +157,7 @@ export default {
 }
 
 .left{
+  background-color:white;
   border:solid gray 1px;
   border-radius:8px;
   box-shadow: 10px 5px 5px gray;
