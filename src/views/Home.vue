@@ -10,19 +10,6 @@
             </div>
         </div>
       </div>
-      
-      <div class="row" style="height:160px; width:80%;">
-        <div class="column ten wide left">
-          
-       <form class="ui form">
-         
-         <div class="field" style="display:flex;">
-          <div class="ui checkbox">
-           <input type="checkbox">
-           <label>薬1</label>
-          </div>
-      </div>
-    </div>
     
     <div class="row" style="height:160px; width:80%;">
       <div class="column ten wide left">
@@ -116,18 +103,11 @@ export default {
 
   methods: {
     // Vue.jsで使う関数はここで記述する
-<<<<<<< HEAD
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
     },
     
   }
-=======
-    medEdit(){
-      this.$router.push({name: 'MedicalEdit'});
-    },
-  },
->>>>>>> feature/frontend
   
 
 }
