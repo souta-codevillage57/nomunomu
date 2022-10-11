@@ -4,7 +4,7 @@
       <!-- 基本的なコンテンツはここに記載する -->
       
       <!-- お薬一覧 -->
-      <h2 class="ui dividing header">お薬編集</h2>    
+      <h2>お薬編集</h2>    
       <div class="ui segment">
         <ul class="ui comments divided">
           <template v-for="(med, index) in meds">

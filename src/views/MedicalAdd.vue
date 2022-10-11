@@ -2,7 +2,7 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
-      <h2 class="ui dividing header">お薬追加</h2>
+      <!--h2 class="ui dividing header">お薬追加</h2-->
       
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->

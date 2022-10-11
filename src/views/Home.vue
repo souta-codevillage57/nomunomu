@@ -1,71 +1,60 @@
 <template>
   <div>
     <div class="ui width fulid center aligned grid">
-      
-    <div class="row width fluid header_container grid">
-      <div class="header_left">
-      ヘッダー
+      <div class="row back_ground_img_wrap">
+        <div class="back_ground_img">
+            <div class="ui medium image char_img_wrap">
+              <img v-if="value=='value1'" class="char_img" src="@/assets/img/inu1.png">
+              <img v-else-if="value=='value2'" class="char_img" src="@/assets/img/inu2.png">
+              <img v-else class="char_img" src="@/assets/img/inu3.png">
+            </div>
+        </div>
       </div>
-      <div class="header_right">
-        
-      </div>
-    </div>
       
-    <div class="row back_ground_img_wrap">
-      <div class="back_ground_img">
-          <div class="ui medium image char_img_wrap">
-            <img v-if="value=='value1'" class="char_img" src="@/assets/img/inu1.png">
-            <img v-else-if="value=='value2'" class="char_img" src="@/assets/img/inu2.png">
-            <img v-else class="char_img" src="@/assets/img/inu3.png">
+      <div class="row" style="height:160px; width:80%;">
+        <div class="column ten wide left">
+          
+       <form class="ui form">
+         
+         <div class="field" style="display:flex;">
+          <div class="ui checkbox">
+           <input type="checkbox">
+           <label>薬1</label>
           </div>
-      </div>
-    </div>
-    
-    <div class="row" style="height:160px; width:80%;">
-      <div class="column ten wide left">
-        
-     <form class="ui form">
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>薬1</label>
-        </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">12時~15時</div>
-       </div>
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>薬2</label>
-        </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">15時~18時</div>
-       </div>
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>薬3</label>
-        </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">18時~21時</div>
-       </div>
-       
-     </form>
-
-      </div>
-      
-      <div class="column five wide right">
-        <div class="ui button">服をあげる</div>
-      </div>
-    </div>
+          <div style="margin-left:30px">2錠</div>
+          <div style="margin-left:30px">12時~15時</div>
+         </div>
+         
+         <div class="field" style="display:flex;">
+          <div class="ui checkbox">
+           <input type="checkbox">
+           <label>薬2</label>
+          </div>
+          <div style="margin-left:30px">2錠</div>
+          <div style="margin-left:30px">15時~18時</div>
+         </div>
+         
+         <div class="field" style="display:flex;">
+          <div class="ui checkbox">
+           <input type="checkbox">
+           <label>薬3</label>
+          </div>
+          <div style="margin-left:30px">2錠</div>
+          <div style="margin-left:30px">18時~21時</div>
+         </div>
+         
+       </form>
   
-    <div class="row">
-      <div class="ui center button" type="submit">お薬編集</div>
-    </div>
+        </div>
+        
+        <div class="column five wide right">
+          <div class="ui button">服をあげる</div>
+        </div>
+      </div>
     
+      <div class="row">
+        <div @click="medEdit" class="ui center button" type="submit">お薬編集</div>
+      </div>
     </div>
   </div>
 </template>
@@ -115,9 +104,12 @@ export default {
     
   },
 
-  // methods: {
+  methods: {
     // Vue.jsで使う関数はここで記述する
-  // },
+    medEdit(){
+      this.$router.push({name: 'MedicalEdit'});
+    },
+  },
   
 
 }
