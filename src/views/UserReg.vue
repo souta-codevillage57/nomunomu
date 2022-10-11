@@ -56,7 +56,7 @@
             <button  v-if="!isPage1" @click="lastPage()" class="ui green button" type="submit">
               前へ
             </button>
-            <button @click="nextPage()" class="ui green button" type="submit">
+            <button class="ui green button" type="submit">
               {{ nextText }}
             </button>
           </div>
@@ -107,11 +107,11 @@ export default {
           userId: this.user.userId,
           password: this.user.password,
           nickName: this.user.nickName,
-          charType: this.user.age
+          charType: this.user.charType
         };
       
         try {
-          const res = await axios.post(baseUrl + '/app-user/signup', requestBody);
+          const res = await axios.post(baseUrl + '/app-user', requestBody);
           console.log('signup');
           console.log(res.data);
           this.$router.push({name: 'Login'});
