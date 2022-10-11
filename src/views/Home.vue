@@ -15,8 +15,8 @@
       <div class="column ten wide left">
         
      <form class="ui form">
-       
-       <div class="field" style="display:flex;">
+       <template v-for="(med, index) in meds">
+       <div class="field" style="display:flex;" :key="index">
         <div class="ui checkbox">
          <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
          <label>{{med.medName}}</label>
@@ -24,30 +24,7 @@
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
         <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
        </div>
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
-         <label>{{med.medName}}</label>
-        </div>
-        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
-       </div>
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
-         <label>{{med.medName}}</label>
-        </div>
-        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
-       </div>
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
-         <label>{{med.medName}}</label>
-        </div>
-        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
-       </div>
+       </template>
        
      </form>
 
