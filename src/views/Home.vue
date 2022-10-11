@@ -18,7 +18,7 @@
        
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction">
+         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
          <label>{{med.medName}}</label>
         </div>
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -26,7 +26,7 @@
        </div>
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction">
+         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
          <label>{{med.medName}}</label>
         </div>
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -34,7 +34,7 @@
        </div>
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction">
+         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
          <label>{{med.medName}}</label>
         </div>
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -42,7 +42,7 @@
        </div>
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
-         <input type="checkbox" v-on:change="CheckedFunction">
+         <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
          <label>{{med.medName}}</label>
         </div>
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
@@ -86,6 +86,7 @@ export default {
     // Vue.jsで使う変数はここに記述する
     return {
       checkCount:0,
+      flag:false,
       meds:[],
       med:{
         medName: "葛根湯",
