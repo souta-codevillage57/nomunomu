@@ -104,8 +104,8 @@ export default {
     }, 
     
     async deletemed(med) {
-      const {userId } = 'takashima';
-      const { medName } = med;
+      const userId = 'takashima';
+      const medName = med.medName;
       const data = {
         userId,
         medName
@@ -114,6 +114,11 @@ export default {
         //お薬の情報を削除するapi
         const res = await axios.delete(baseUrl + '/app-medicine', { data, headers });
         console.log(res);
+        
+        //お薬の情報を削除すると一覧に飛ぶ
+        if (res) {
+          this.$router.push({name: "MedicalEdit"});
+        }
       }catch(e){
         //エラー処理
       }
@@ -124,6 +129,7 @@ export default {
     }, //お薬追加ページに飛ぶ
     
     async updatemed() {
+      
       this.$router.push({name: "MedicalUpdate"});
     }, // お薬更新のページに飛ぶ
   }
