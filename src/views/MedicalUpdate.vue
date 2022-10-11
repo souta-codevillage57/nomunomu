@@ -23,9 +23,9 @@
             <div class="ui left icon input">
               1日に何回飲むの？
               <select v-model="selectedItem">
-                <option v-for="item in selectItems":value="item.id" :key="item.id">
-                  {{ item.label }}
-                </option>
+                <!--<option v-for="item in selectItems":value="item.id" :key="item.id">-->
+                <!--  {{ item.label }}-->
+                <!--</option>-->
               </select>
             </div>
           </div>

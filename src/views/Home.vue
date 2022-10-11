@@ -29,28 +29,10 @@
        <div class="field" style="display:flex;">
         <div class="ui checkbox">
          <input type="checkbox">
-         <label>薬1</label>
+         <label>{{med.medName}}</label>
         </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">12時~15時</div>
-       </div>
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>薬2</label>
-        </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">15時~18時</div>
-       </div>
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>薬3</label>
-        </div>
-        <div style="margin-left:30px">2錠</div>
-        <div style="margin-left:30px">18時~21時</div>
+        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
        </div>
        
      </form>
@@ -63,7 +45,7 @@
     </div>
   
     <div class="row">
-      <div class="ui center button" type="submit">お薬編集</div>
+      <div v-on:click="MedicalEditHandler" class="ui center button" type="submit">お薬編集</div>
     </div>
     
     </div>
@@ -74,8 +56,8 @@
 // 必要なものはここでインポートする
 // @は/srcと同じ意味です
 //import something from '@/components/something.vue';
-// import { baseUrl } from '@/assets/config.js';
-// import axios from "axios";
+import { baseUrl } from '@/assets/config.js';
+import axios from "axios";
 
 // const headers = {'Authorization' : 'mtiToken'};
 
@@ -89,35 +71,52 @@ export default {
     return {
       value: "value3",
       med:{
-        medname:null,
-        medquantity:null
-      },
-      medtime: {
-        oncemedfirsttime:null,
-        oncemedlasttime:null,
-        twicemedfirsttime:null,
-        twicemedlasttime:null,
-        thircemedfirsttime:null,
-        thircemedlasttime:null
-      },
+        medName: "葛根湯",
+        oncemedfirsttime: "12:30",
+        userId: "takashima",
+        oncemedlasttime: "14:00",
+        medQuantity: 3,
+        medNum: 1
+      }
     };
   },
   
   computed: {
   // 計算した結果を変数として利用したいときはここに記述する
+  //現在時刻が薬の服用時間に当てはまっているかの関数
   },
   
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    // apiからarticleを取得する
-    // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
-    // apiからarticleを取得する
+
+      // headerを指定する
+      const headers = {'Authorization' : 'mtiToken'};
+  
+      try{
+        const res = await axios.get(baseUrl + '/app-medicine',  { headers });
+        // 成功時の処理
+        console.log(res.data)
+        // this.med.medName =res.data.medName;
+        // this.med.oncemedfirsttime =res.data.oncemedfirsttime;
+        // this.med.userId =res.data.userId;
+        // this.med.oncemedlasttime =res.data.oncemedlasttime;
+        // this.med.medQuantity =res.data.medQuantity;
+        // this.med.medNum =res.data.medNum;
+        
+      }catch(e) {
+        // エラー時の処理
+        console.log("error")
+      }
     
   },
 
-  // methods: {
+  methods: {
     // Vue.jsで使う関数はここで記述する
-  // },
+    MedicalEditHandler(){
+      this.$router.push('/medicaledit')
+    },
+    
+  }
   
 
 }
