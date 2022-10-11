@@ -47,9 +47,7 @@ export default {
       isLogin: true,
       user: {
         userId: null,
-        password: null,
-        nickname: null,
-        age: null
+        password: null
       }
     };
   },
@@ -72,7 +70,7 @@ export default {
       };
     
       try {
-        const res = await axios.post(baseUrl + '/user/login', requestBody);
+        const res = await axios.post(baseUrl + '/app-user/login', requestBody);
         console.log('login');
         
         window.localStorage.setItem('token', res.data.token);

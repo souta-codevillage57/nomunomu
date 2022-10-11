@@ -28,26 +28,26 @@
           <div class="field" v-if="isPage1">
             <div class="ui left icon input">
               <i class="tag icon"></i>
-              <input v-model="user.nickname" type="text" placeholder="Nickname"/>
+              <input v-model="user.nickName" type="text" placeholder="Nickname"/>
             </div>
           </div>
           <div class="grouped fields" v-if="!isPage1">   
             <label>どのキャラクターを育てたいですか?</label>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=1 checked="checked">
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="犬" checked="checked">
                 <label>犬</label>
               </div>
             </div>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=2>
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="猫">
                 <label>猫</label>
               </div>
             </div>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=3>
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="盆栽">
                 <label>盆栽</label>
               </div>
             </div>
@@ -56,7 +56,7 @@
             <button  v-if="!isPage1" @click="lastPage()" class="ui green button" type="submit">
               前へ
             </button>
-            <button @click="nextPage()" class="ui green button" type="submit">
+            <button class="ui green button" type="submit">
               {{ nextText }}
             </button>
           </div>
@@ -84,8 +84,8 @@ export default {
       user: {
         userId: null,
         password: null,
-        nickname: null,
-        age: null
+        nickName: null,
+        charType: null
       }
     };
   },
@@ -106,12 +106,12 @@ export default {
         const requestBody = {
           userId: this.user.userId,
           password: this.user.password,
-          nickname: this.user.nickname,
-          age: this.user.age
+          nickName: this.user.nickName,
+          charType: this.user.charType
         };
       
         try {
-          const res = await axios.post(baseUrl + '/user/signup', requestBody);
+          const res = await axios.post(baseUrl + '/app-user', requestBody);
           console.log('signup');
           console.log(res.data);
           this.$router.push({name: 'Login'});
