@@ -21,26 +21,26 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="tag icon"></i>
-              <input v-model="user.nickname" type="text" placeholder='Nickname'/>
+              <input v-model="user.nickName" type="text" placeholder='Nickname'/>
             </div>
           </div>
           <div class="grouped fields">   
             <label>どのキャラクターを育てたいですか?</label>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=1 checked="checked">
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="犬" checked="checked">
                 <label>犬</label>
               </div>
             </div>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=2>
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="猫">
                 <label>猫</label>
               </div>
             </div>
             <div class="field">
               <div class="ui radio checkbox">
-                <input v-model="user.age" type="radio" placeholder="Age" value=3>
+                <input v-model="user.charType" type="radio" placeholder="Chartype" value="盆栽">
                 <label>盆栽</label>
               </div>
             </div>
@@ -78,8 +78,8 @@ export default {
       user: {
         userId: window.localStorage.getItem('userId'),
         password: null,
-        nickname: null,
-        age: null
+        nickName: null,
+        charType: null
       },
     };
   },
@@ -92,20 +92,21 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const { userId, password, nickname, age } = this.user;
+      const { userId, password, nickName, charType } = this.user;
       const requestBody = {
         userId,
         password,
-        nickname,
-        age
+        nickName,
+        charType
       };
       
       try {
         console.log(requestBody);
-        const res = await axios.put(baseUrl + '/user', requestBody, { headers });
+        const res = await axios.put(baseUrl + '/app-user', requestBody, { headers });
         // 成功時の処理
         console.log('updated user information');
         console.log(res.data);
+        this.$router.push({name: "Home"});
       }catch(e){
         // エラー時の処理
         console.log('error in submit');
@@ -121,7 +122,7 @@ export default {
       };
       
       try{
-        await axios.delete(baseUrl + '/user', { data, headers});
+        await axios.delete(baseUrl + '/app-user', { data, headers});
         this.$router.push({name: "Login"});
       }catch(e){
         console.log('error');
@@ -133,10 +134,10 @@ export default {
     const headers = {'Authorization': 'mtiToken'};
     
     try{
-      const res = await axios.get(baseUrl + `/user?userId=${this.user.userId}`, { headers });
+      const res = await axios.get(baseUrl + `/app-user?userId=${this.user.userId}`, { headers });
       
-      this.user.nickname = res.data.nickname;
-      this.user.age = res.data.age;
+      this.user.nickName = res.data.nickName;
+      this.user.charType = res.data.charType;
     }catch(e){
       console.log('error in get');
     }
