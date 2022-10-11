@@ -12,7 +12,7 @@
               <div class="content">
                 <div>
                   <span class="author">{{med.medName}}</span>
-                  <button class="ui right floated grey mini button" @click="updatemed()">
+                  <button class="ui right floated grey mini button" @click="updatemed(med)">
                     更新
                   </button>
                   <button class="ui right floated grey mini button" @click="deletemed(med)">
@@ -116,9 +116,7 @@ export default {
         console.log(res);
         
         //お薬の情報を削除すると一覧に飛ぶ
-        if (res) {
-          this.$router.push({name: "MedicalEdit"});
-        }
+        this.$router.go({path: this.$router.currentRoute.path, force: true})
       }catch(e){
         //エラー処理
       }
@@ -128,9 +126,16 @@ export default {
       this.$router.push({name: "MedicalAdd"});
     }, //お薬追加ページに飛ぶ
     
-    async updatemed() {
-      
-      this.$router.push({name: "MedicalUpdate"});
+    async updatemed(med) {
+      console.log(med.medName);
+      window.localStorage.setItem('medName', med.medName);
+      console.log(window.localStorage.getItem('medName'));
+      this.$router.push({
+        name: "MedicalUpdate",
+        params: {
+          medName: med.medName
+        },
+      });
     }, // お薬更新のページに飛ぶ
   }
 }

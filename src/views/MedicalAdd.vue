@@ -146,7 +146,7 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const userId = 'userid';
+      const userId = 'takashima';
       const { medName, medQuantity } = this.med;
       const medNum = this.selectedItem;
       const { oncemedfirsttime, oncemedlasttime, twicemedfirsttime, twicemedlasttime, thircemedfirsttime, thircemedlasttime } = this.medtime;

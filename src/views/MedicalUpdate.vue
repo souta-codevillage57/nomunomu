@@ -175,13 +175,19 @@ export default {
     async mededit() {
       this.$router.push({name: "MedicalEdit"});
     }, //お薬追加ページに飛ぶ
+    
+    async getstrage() {
+      return window.localStrage.getItem('medName');
+    }
   },
   
   created: async function(){
     const headers = {'Authorization': 'mtiToken'};
     
     const userId = 'takashima';
-    const medName = '風邪薬';
+    const medName = this.$route.params.medName.toString();
+    
+    console.log(medName);
     
     try{
       const res = await axios.get(baseUrl + `/app-medicine?userId=` + userId + `&medName=` + medName, { headers });
