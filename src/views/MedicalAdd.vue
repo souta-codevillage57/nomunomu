@@ -2,37 +2,49 @@
   <div>
     <div class="ui main container">
       <!-- 基本的なコンテンツはここに記載する -->
-      <h2 class="ui dividing header">お薬追加</h2>
+      <!--h2 class="ui dividing header">お薬追加</h2-->
       
       <div class="ui segment">
         <!-- ここにセグメントの中身を記述する -->
         <form @submit.prevent="submit" class="ui large form">
           
           <div class="field">
-            <div class="ui left icon input">
-              薬の名前は何？
-              <input v-model="med.medname" required type="text" placeholder="薬の名前"/>
+            <div class="ui left input">
+              <div class="text">
+                薬の名前は何？
+              </div>
+              <input v-model="med.medName" required type="text" placeholder="薬の名前"/>
             </div>
           </div>
           <div class="field">
-            <div class="ui left icon input">
-              何錠飲むの？
-              <input v-model="med.medquantity" required type="number" placeholder="何錠"/>
+            <div class="ui left input">
+              <div class="text">
+                何錠飲むの？
+              </div>
+              <input v-model="med.medQuantity" required type="number" placeholder="何錠"/>
             </div>
           </div>
           <div class="field">
-            <div class="ui left icon input">
-              1日に何回飲むの？
+            <div class="ui left input">
+              <div class="text">
+                1日に何回飲むの？
+              </div>
               <select v-model="selectedItem">
+<<<<<<< HEAD
                 <!--<option v-for="item in selectItems":value="item.id" :key="item.id">-->
                 <!--  {{ item.label }}-->
                 <!--</option>-->
+=======
+                <option v-for="item in selectItems" :value="item.id" :key="item.id">
+                  {{ item.label }}
+                </option>
+>>>>>>> feature/frontend
               </select>
             </div>
           </div>
           
-          <div v-if="isOnce" class="field">
-            <div class="ui left icon input">
+          <div v-if="isOnce" class="field timetext right">
+            <div class="ui left input">
               <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
@@ -41,13 +53,13 @@
           </div>
           
           <div v-if="isTwice" class="field">
-            <div class="ui left icon input">
+            <div class="ui left input">
               <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
               時の間
             </div>
-            <div class="ui left icon input">
+            <div class="ui left input">
               <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
@@ -56,19 +68,19 @@
           </div>
           
           <div v-if="isThirce" class="field">
-            <div class="ui left icon input">
+            <div class="ui left input">
               <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
               時の間
             </div>
-            <div class="ui left icon input">
+            <div class="ui left input">
               <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
               時の間
             </div>
-            <div class="ui left icon input">
+            <div class="ui left input">
               <input v-model="medtime.thircemedfirsttime" required type="text" placeholder="時間を入力してね"/>
               時から
               <input v-model="medtime.thircemedlasttime" required type="text" placeholder="時間を入力してね"/>
@@ -101,9 +113,10 @@ export default {
   // Vue.jsで使う変数はここに記述する
     return {
       // userId: window.localStrage.getItem('userId'),
+      userId: 11,
       med: {
-        medname: null,
-        medquantity: null,
+        medName: null,
+        medQuantity: null,
       },
       medtime: {
         oncemedfirsttime: null,
@@ -139,15 +152,15 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const { userId } = this.userId;
-      const { medname, medquantity } = this.med;
-      const { mednumber } = this.selectedItem;
+      const userId = 'userid';
+      const { medName, medQuantity } = this.med;
+      const medNum = this.selectedItem;
       const { oncemedfirsttime, oncemedlasttime, twicemedfirsttime, twicemedlasttime, thircemedfirsttime, thircemedlasttime } = this.medtime;
       const requestBody = {
         userId,
-        medname,
-        medquantity,
-        mednumber,
+        medName,
+        medQuantity,
+        medNum,
         oncemedfirsttime,
         oncemedlasttime,
         twicemedfirsttime,
@@ -158,10 +171,15 @@ export default {
       
       try {
         console.log(requestBody);
-        const res = await axios.put(baseUrl + '/med', requestBody, { headers });
+        const res = await axios.post(baseUrl + '/app-medicine', requestBody, { headers });
         // 成功時の処理
         console.log('register med information');
         console.log(res.data);
+        
+        //お薬の情報を登録すると一覧に飛ぶ
+        if (res) {
+          this.$router.push({name: "MedicalEdit"});
+        }
       }catch(e){
         // エラー時の処理
         console.log('error in submit');
@@ -173,20 +191,27 @@ export default {
     }, //お薬追加ページに飛ぶ
   },
   
-  created: async function(){
-    const headers = {'Authorization': 'mtiToken'};
+  // created: async function(){
+  //   const headers = {'Authorization': 'mtiToken'};
     
-    try{
-      const res = await axios.get(baseUrl + `/user?userId=${this.user.userId}`, { headers });
+  //   try{
+  //     const res = await axios.get(baseUrl + `/user?userId=${this.user.userId}`, { headers });
       
-      this.user.nickname = res.data.nickname;
-      this.user.age = res.data.age;
-    }catch(e){
-      console.log('error in get')
-    }
-  }
+  //     this.user.nickname = res.data.nickname;
+  //     this.user.age = res.data.age;
+  //   }catch(e){
+  //     console.log('error in get')
+  //   }
+  // }
 }
 </script>
 <style scoped>
 /* このコンポーネントだけに適用するCSSはここに記載する */
+.text {
+  width : 300px;
+}
+
+.timetext {
+  width : 600px;
+}
 </style>
