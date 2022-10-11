@@ -19,7 +19,7 @@
          
         <div v-if="!isOver(med)" class="field" style="display:flex;" :key="index">
           <div class="ui checkbox">
-            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
+            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = false;">
             <label>{{med.medName}}</label>
           </div>
           <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
