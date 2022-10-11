@@ -16,7 +16,8 @@
         
      <form class="ui form">
        <template v-for="(med, index) in meds">
-        <div class="field" style="display:flex;" :key="index">
+         
+        <div v-if="isNotOver(med)" class="field" style="display:flex;" :key="index">
           <div class="ui checkbox">
             <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
             <label>{{med.medName}}</label>
@@ -24,6 +25,16 @@
           <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
           <div style="margin-left:30px">{{med.oncemedfirsttime}} 時から {{med.oncemedlasttime}} 時まで</div>
         </div>
+        
+        <div v-if="isOver(med)" class="field" style="display:flex;" :key="index">
+          <div class="ui checkbox">
+            <input disabled type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
+            <label>{{med.medName}}</label>
+          </div>
+          <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="margin-left:30px">{{med.oncemedfirsttime}} 時から {{med.oncemedlasttime}} 時まで</div>
+        </div>
+        
        </template>
        
      </form>
@@ -56,9 +67,7 @@ import axios from "axios";
 
 export default {
   name: 'Home',
-  components: {
-   // 読み込んだコンポーネント名をここに記述する
-  },
+  
   data() {
     // Vue.jsで使う変数はここに記述する
     return {
@@ -72,17 +81,28 @@ export default {
         oncemedlasttime: null,
         medQuantity: null,
         medNum: null
-      }
+      },
+      nowtime: '',
     };
   },
   
   computed: {
-  // 計算した結果を変数として利用したいときはここに記述する
-  //現在時刻が薬の服用時間に当てはまっているかの関数
+    isNotOver(med) {
+      console.log(med)
+      console.log( this.nowtime.getHours())
+      return med.oncemedfirsttime > this.nowtime.getHours();
+    },
+    isOver(med) {
+      console.log(med.oncemedfirsttime)
+      console.log( this.nowtime.getHours())
+      return med.oncemedfirsttime < this.nowtime.getHours();
+    },
   },
   
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
+    const nowtime = new Date();
+    console.log(nowtime.getHours())
 
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
