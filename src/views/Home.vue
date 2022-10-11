@@ -24,6 +24,30 @@
         <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
         <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
        </div>
+       <div class="field" style="display:flex;">
+        <div class="ui checkbox">
+         <input type="checkbox" v-on:change="CheckedFunction">
+         <label>{{med.medName}}</label>
+        </div>
+        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
+       </div>
+       <div class="field" style="display:flex;">
+        <div class="ui checkbox">
+         <input type="checkbox" v-on:change="CheckedFunction">
+         <label>{{med.medName}}</label>
+        </div>
+        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
+       </div>
+       <div class="field" style="display:flex;">
+        <div class="ui checkbox">
+         <input type="checkbox" v-on:change="CheckedFunction">
+         <label>{{med.medName}}</label>
+        </div>
+        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
+       </div>
        
      </form>
 
@@ -52,6 +76,7 @@ import axios from "axios";
 
 // const headers = {'Authorization' : 'mtiToken'};
 
+
 export default {
   name: 'Home',
   components: {
@@ -61,6 +86,7 @@ export default {
     // Vue.jsで使う変数はここに記述する
     return {
       checkCount:0,
+      meds:[],
       med:{
         medName: "葛根湯",
         oncemedfirsttime: "12:30",
@@ -109,8 +135,12 @@ export default {
     },
     
     CheckedFunction(){
+      if(this.checkCount==3){
+         this.checkCount=3;
+      }else{
       this.checkCount+=1;
-      console.log(this.checkCount)
+      }
+      console.log(this.checkCount);
     }
     
   }
