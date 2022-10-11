@@ -26,6 +26,9 @@
       </div>          
       <!-- お薬一覧終了-->
       <div class="addbtn">
+        <button class="ui floated grey mini button" @click="gohome()">
+          ホームに戻る
+        </button>
         <button class="ui floated grey mini button" @click="addmed()">
           追加
         </button>
@@ -125,6 +128,10 @@ export default {
     async addmed() {
       this.$router.push({name: "MedicalAdd"});
     }, //お薬追加ページに飛ぶ
+    
+    async gohome() {
+      this.$router.push({name: "Home"});
+    }, //ホームに飛ぶ
     
     async updatemed(med) {
       console.log(med.medName);
