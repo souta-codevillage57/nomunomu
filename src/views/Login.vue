@@ -77,12 +77,12 @@ export default {
         window.localStorage.setItem('userId', this.user.userId);
         this.$router.push({name: 'Home'});
       }catch(e){
-        console.log('error')
+        console.log('error');
       }
       return;
     }
   }
-}
+};
 </script>
 <style scoped>
 /* このコンポーネントだけに適用するCSSはここに記載する */

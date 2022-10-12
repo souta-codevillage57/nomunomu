@@ -13,7 +13,7 @@
     
     <div class="row" style="width:80%;">
       <div class="column ten wide left">
-        
+       
      <form class="ui form">
        <template v-for="(med, index) in all_meds">
          
@@ -79,10 +79,16 @@ export default {
       med:{
         medName: null,
         oncemedfirsttime: null,
+        twicemedfirsttime: null,
+        thircemedfirsttime: null,
         userId: window.localStorage.getItem('userId'),
         oncemedlasttime: null,
+        twicemedlasttime: null,
+        thircemedlasttime: null,
         medQuantity: null,
-        medNum: null
+        medNum: null,
+        start: null,
+        end: null
       },
     };
   },
@@ -93,21 +99,22 @@ export default {
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     const nowtime = new Date();
-    console.log(nowtime.getHours())
+    console.log(nowtime.getHours());
 
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
   
       try{
         const userId = this.med.userId;
-        console.log(userId)
+        console.log(userId);
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
         
         // 成功時の処理
+        var medd;
         for (var value of this.meds.values()) {
           if(value.medNum >= 1){
-            const med = {
+            medd = {
               userId,
               medName: value.medName,
               medQuantity: value.medQuantity,
@@ -115,31 +122,36 @@ export default {
               start: Number(value.oncemedfirsttime),
               end: Number(value.oncemedlasttime)
             };
-            this.all_meds.push(med);
-          }
-          if(value.medNum >= 2){
-            const med = {
-              userId,
-              medName: value.medName,
-              medQuantity: value.medQuantity,
-              medNum: value.medNum,
-              start: Number(value.twicemedfirsttime),
-              end: Number(value.twicemedlasttime)
-            };
-            this.all_meds.push(med);
-          }
-          if(value.medNum >= 3){
-            const med = {
-              userId,
-              medName: value.medName,
-              medQuantity: value.medQuantity,
-              medNum: value.medNum,
-              start: Number(value.thircemedfirsttime),
-              end: Number(value.thircemedlasttime)
-            };
-            this.all_meds.push(med);
+            this.all_meds.push(medd);
           }
         }
+        for (var value2 of this.meds.values()) {
+          if(value2.medNum >= 2){
+            medd = {
+              userId,
+              medName: value2.medName,
+              medQuantity: value2.medQuantity,
+              medNum: value2.medNum,
+              start: Number(value2.twicemedfirsttime),
+              end: Number(value2.twicemedlasttime)
+            };
+            this.all_meds.push(medd);
+          }
+        }
+        for (var value3 of this.meds.values()) {
+          if(value3.medNum >= 3){
+            medd = {
+              userId,
+              medName: value3.medName,
+              medQuantity: value3.medQuantity,
+              medNum: value3.medNum,
+              start: Number(value3.thircemedfirsttime),
+              end: Number(value3.thircemedlasttime)
+            };
+            this.all_meds.push(medd);
+          }
+        }
+        
         this.all_meds.sort(function(a,b){
           if(a.start < b.start) return -1;
           else if(a.start > b.start) return 1;
@@ -149,11 +161,12 @@ export default {
           }
           return 0;
         });
-        console.log("all_meds")
+        //this.all_meds=this.meds
+        console.log("all_meds");
         console.log(this.all_meds);
       }catch(e) {
         // エラー時の処理
-        console.log("error")
+        console.log("error");
       }
     
   },
@@ -162,17 +175,11 @@ export default {
     // Vue.jsで使う関数はここで記述する
     isOver(med) {
       const now = new Date();
-      if(med.end <= now.getHours()){
-        this.outCount += 1;
-        if(this.outCount >= 3){
-          this.outCount = 0;
-        }
-      }
       return (med.end <= now.getHours());
     },
     
     MedicalEditHandler(){
-      this.$router.push('/medicaledit')
+      this.$router.push('/medicaledit');
     },
     CheckedFunction(){
       if(this.checkCount==3){
@@ -183,7 +190,7 @@ export default {
       console.log(this.checkCount);
     }
   }
-}
+};
   
 </script>
 
