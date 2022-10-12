@@ -39,45 +39,45 @@
           
           <div v-if="isOnce" class="field timetext right">
             <div class="ui left input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
           
           <div v-if="isTwice" class="field">
             <div class="ui left input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left input">
-              <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
           
           <div v-if="isThirce" class="field">
             <div class="ui left input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left input">
-              <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left input">
-              <input v-model="medtime.thircemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.thircemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.thircemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.thircemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
@@ -107,7 +107,7 @@ export default {
   // Vue.jsで使う変数はここに記述する
     return {
       // userId: window.localStrage.getItem('userId'),
-      userId: 11,
+      userId: window.localStorage.getItem('userId'),
       med: {
         medName: null,
         medQuantity: null,
@@ -146,7 +146,7 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const userId = 'userid';
+      const userId = this.userId;
       const { medName, medQuantity } = this.med;
       const medNum = this.selectedItem;
       const { oncemedfirsttime, oncemedlasttime, twicemedfirsttime, twicemedlasttime, thircemedfirsttime, thircemedlasttime } = this.medtime;

@@ -4,26 +4,38 @@
       <div class="row back_ground_img_wrap">
         <div class="back_ground_img">
             <div class="ui medium image char_img_wrap">
-              <img v-if="value=='value1'" class="char_img" src="@/assets/img/inu1.png">
-              <img v-else-if="value=='value2'" class="char_img" src="@/assets/img/inu2.png">
-              <img v-else class="char_img" src="@/assets/img/inu3.png">
+              <img v-if="checkCount>='3'" class="char_img" src="@/assets/img/inu3.png">
+              <img v-else-if="checkCount<='-1'" class="char_img" src="@/assets/img/inu1.png">
+              <img v-else class="char_img" src="@/assets/img/inu2.png">
             </div>
         </div>
       </div>
     
-    <div class="row" style="height:160px; width:80%;">
+    <div class="row" style="width:80%;">
       <div class="column ten wide left">
         
      <form class="ui form">
-       
-       <div class="field" style="display:flex;">
-        <div class="ui checkbox">
-         <input type="checkbox">
-         <label>{{med.medName}}</label>
+       <template v-for="(med, index) in all_meds">
+         
+        <div v-if="!isOver(med)" class="field" style="display:flex;" :key="index">
+          <div class="ui checkbox">
+            <input type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = false;">
+            <label>{{med.medName}}</label>
+          </div>
+          <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
         </div>
-        <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-        <div style="margin-left:30px">{{med.oncemedfirsttime}} から {{med.oncemedlasttime}} まで</div>
-       </div>
+        
+        <div v-if="isOver(med)" class="field" style="display:flex;" :key="index">
+          <div class="ui checkbox">
+            <input disabled type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
+            <label>{{med.medName}}</label>
+          </div>
+          <div style="color:gray; margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="color:gray; margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
+        </div>
+        
+       </template>
        
      </form>
 
@@ -52,48 +64,93 @@ import axios from "axios";
 
 // const headers = {'Authorization' : 'mtiToken'};
 
+
 export default {
   name: 'Home',
-  components: {
-   // 読み込んだコンポーネント名をここに記述する
-  },
+  
   data() {
     // Vue.jsで使う変数はここに記述する
     return {
-      value: "value3",
+      checkCount:0,
+      outCount:0,
+      flag:false,
+      all_meds:[],
+      meds:[],
       med:{
-        medName: "葛根湯",
-        oncemedfirsttime: "12:30",
-        userId: "takashima",
-        oncemedlasttime: "14:00",
-        medQuantity: 3,
-        medNum: 1
-      }
+        medName: null,
+        oncemedfirsttime: null,
+        userId: window.localStorage.getItem('userId'),
+        oncemedlasttime: null,
+        medQuantity: null,
+        medNum: null
+      },
     };
   },
   
   computed: {
-  // 計算した結果を変数として利用したいときはここに記述する
-  //現在時刻が薬の服用時間に当てはまっているかの関数
   },
   
   created: async function() {
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
+    const nowtime = new Date();
+    console.log(nowtime.getHours())
 
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
   
       try{
-        const res = await axios.get(baseUrl + '/app-medicine',  { headers });
-        // 成功時の処理
-        console.log(res.data)
-        // this.med.medName =res.data.medName;
-        // this.med.oncemedfirsttime =res.data.oncemedfirsttime;
-        // this.med.userId =res.data.userId;
-        // this.med.oncemedlasttime =res.data.oncemedlasttime;
-        // this.med.medQuantity =res.data.medQuantity;
-        // this.med.medNum =res.data.medNum;
+        const userId = this.med.userId;
+        console.log(userId)
+        const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
+        this.meds = res.data.userMeds;
         
+        // 成功時の処理
+        for (var value of this.meds.values()) {
+          if(value.medNum >= 1){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: Number(value.oncemedfirsttime),
+              end: Number(value.oncemedlasttime)
+            };
+            this.all_meds.push(med);
+          }
+          if(value.medNum >= 2){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: Number(value.twicemedfirsttime),
+              end: Number(value.twicemedlasttime)
+            };
+            this.all_meds.push(med);
+          }
+          if(value.medNum >= 3){
+            const med = {
+              userId,
+              medName: value.medName,
+              medQuantity: value.medQuantity,
+              medNum: value.medNum,
+              start: Number(value.thircemedfirsttime),
+              end: Number(value.thircemedlasttime)
+            };
+            this.all_meds.push(med);
+          }
+        }
+        this.all_meds.sort(function(a,b){
+          if(a.start < b.start) return -1;
+          else if(a.start > b.start) return 1;
+          else if(a.start == b.start){
+            if(a.end < b.end) return -1;
+            else if(a.end > b.end) return 1;
+          }
+          return 0;
+        });
+        console.log("all_meds")
+        console.log(this.all_meds);
       }catch(e) {
         // エラー時の処理
         console.log("error")
@@ -103,12 +160,29 @@ export default {
 
   methods: {
     // Vue.jsで使う関数はここで記述する
+    isOver(med) {
+      const now = new Date();
+      if(med.end <= now.getHours()){
+        this.outCount += 1;
+        if(this.outCount >= 3){
+          this.outCount = 0;
+        }
+      }
+      return (med.end <= now.getHours());
+    },
+    
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
     },
+    CheckedFunction(){
+      if(this.checkCount==3){
+         this.checkCount=3;
+      }else{
+      this.checkCount+=1;
+      }
+      console.log(this.checkCount);
+    }
   }
-  
-
 }
   
 </script>
@@ -149,6 +223,7 @@ export default {
 }
 
 .left{
+  background-color:white;
   border:solid gray 1px;
   border-radius:8px;
   box-shadow: 10px 5px 5px gray;

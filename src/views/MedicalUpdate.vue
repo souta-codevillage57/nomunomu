@@ -32,45 +32,45 @@
           
           <div v-if="isOnce" class="field">
             <div class="ui left icon input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
           
           <div v-if="isTwice" class="field">
             <div class="ui left icon input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left icon input">
-              <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
           
           <div v-if="isThirce" class="field">
             <div class="ui left icon input">
-              <input v-model="medtime.oncemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.oncemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.oncemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left icon input">
-              <input v-model="medtime.twicemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.twicemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.twicemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
             <div class="ui left icon input">
-              <input v-model="medtime.thircemedfirsttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.thircemedfirsttime" required type="number" placeholder="時間を入力してね"/>
               時から
-              <input v-model="medtime.thircemedlasttime" required type="text" placeholder="時間を入力してね"/>
+              <input v-model="medtime.thircemedlasttime" required type="number" placeholder="時間を入力してね"/>
               時の間
             </div>
           </div>
@@ -99,8 +99,7 @@ export default {
   data() {
   // Vue.jsで使う変数はここに記述する
     return {
-      // userId: window.localStrage.getItem('userId'),
-      userId: null,
+      userId: window.localStorage.getItem('userId'),
       med: {
         medName: null,
         medQuantity: null,
@@ -118,7 +117,7 @@ export default {
         { id: 2, label: "2回" },
         { id: 3, label: "3回" },
       ],
-      selectedItem: 1,
+      selectedItem: null,
     };
   },
   computed: {
@@ -139,7 +138,8 @@ export default {
       // headerを指定する
       const headers = {'Authorization' : 'mtiToken'};
       // リクエストボディを指定する
-      const userId = 'takashima';
+      const userId = this.userId;
+      console.log(userId);
       const { medName, medQuantity } = this.med;
       const medNum = this.selectedItem;
       const { oncemedfirsttime, oncemedlasttime, twicemedfirsttime, twicemedlasttime, thircemedfirsttime, thircemedlasttime } = this.medtime;
@@ -175,13 +175,19 @@ export default {
     async mededit() {
       this.$router.push({name: "MedicalEdit"});
     }, //お薬追加ページに飛ぶ
+    
+    async getstrage() {
+      return window.localStrage.getItem('medName');
+    }
   },
   
   created: async function(){
     const headers = {'Authorization': 'mtiToken'};
     
-    const userId = 'takashima';
-    const medName = '風邪薬';
+    const userId = this.userId;
+    const medName = this.$route.params.medName.toString();
+    
+    console.log(medName);
     
     try{
       const res = await axios.get(baseUrl + `/app-medicine?userId=` + userId + `&medName=` + medName, { headers });
@@ -190,7 +196,8 @@ export default {
       
       this.med.medName = res.data.medName;
       this.med.medQuantity = res.data.medQuantity;
-      this.medNumber = res.data.medNumber;
+      this.medNum = res.data.medNum;
+      this.selectedItem = res.data.medNum;
       this.medtime.oncemedfirsttime = res.data.oncemedfirsttime;
       this.medtime.oncemedlasttime = res.data.oncemedlasttime;
       this.medtime.twicemedfirsttime = res.data.twicemedfirsttime;

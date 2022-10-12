@@ -12,7 +12,7 @@
               <div class="content">
                 <div>
                   <span class="author">{{med.medName}}</span>
-                  <button class="ui right floated grey mini button" @click="updatemed()">
+                  <button class="ui right floated grey mini button" @click="updatemed(med)">
                     更新
                   </button>
                   <button class="ui right floated grey mini button" @click="deletemed(med)">
@@ -26,6 +26,9 @@
       </div>          
       <!-- お薬一覧終了-->
       <div class="addbtn">
+        <button class="ui floated grey mini button" @click="gohome()">
+          ホームに戻る
+        </button>
         <button class="ui floated grey mini button" @click="addmed()">
           追加
         </button>
@@ -52,17 +55,18 @@ export default {
     // Vue.jsで使う変数はここに記述する
     return{
       // userId: window.localStrage.getItem('userId'),
-      meds: {
-        userId: '',
-        medName: '',
-        medQuantity: '',
-        medNum: '',
-        oncemedfirsttime: '',
-        oncemedlasttime: '',
-        twicemedfirsttime: '',
-        twicemedlasttime: '',
-        thircemedfirsttime: '',
-        thircemedlasttime: '',
+      meds: [],
+      med: {
+        userId: window.localStorage.getItem('userId'),
+        medName: null,
+        medQuantity: null,
+        medNum: null,
+        oncemedfirsttime: null,
+        oncemedlasttime: null,
+        twicemedfirsttime: null,
+        twicemedlasttime: null,
+        thircemedfirsttime: null,
+        thircemedlasttime: null,
       },
     };
   },
@@ -75,10 +79,15 @@ export default {
     // apiからarticleを取得する
     // Vue.jsの読み込みが完了したときに実行する処理はここに記述する
     // apiからarticleを取得する
+    const headers = {'Authorization' : 'mtiToken'};
     try{
       //お薬の情報を取得する
-      await this.getmeds();
-      console.log("GET");
+      const userId = this.med.userId;
+      console.log(userId)
+      const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
+      this.meds = res.data.userMeds;
+      // 成功時の処理
+      console.log(this.meds)
     }catch(e){
       //エラー処理
       console.log(this.e);
@@ -92,7 +101,7 @@ export default {
       try{
         //お薬の情報を取得するapi
         const headers = {'Authorization' : 'mtiToken'};
-        const userId = 'takashima';
+        const userId = this.med.userId;
         
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
@@ -104,7 +113,7 @@ export default {
     }, 
     
     async deletemed(med) {
-      const userId = 'takashima';
+      const userId = this.med.userId;
       const medName = med.medName;
       const data = {
         userId,
@@ -116,9 +125,7 @@ export default {
         console.log(res);
         
         //お薬の情報を削除すると一覧に飛ぶ
-        if (res) {
-          this.$router.push({name: "MedicalEdit"});
-        }
+        this.$router.go({path: this.$router.currentRoute.path, force: true})
       }catch(e){
         //エラー処理
       }
@@ -128,9 +135,20 @@ export default {
       this.$router.push({name: "MedicalAdd"});
     }, //お薬追加ページに飛ぶ
     
-    async updatemed() {
-      
-      this.$router.push({name: "MedicalUpdate"});
+    async gohome() {
+      this.$router.push({name: "Home"});
+    }, //ホームに飛ぶ
+    
+    async updatemed(med) {
+      console.log(med.medName);
+      window.localStorage.setItem('medName', med.medName);
+      console.log(window.localStorage.getItem('medName'));
+      this.$router.push({
+        name: "MedicalUpdate",
+        params: {
+          medName: med.medName
+        },
+      });
     }, // お薬更新のページに飛ぶ
   }
 }
