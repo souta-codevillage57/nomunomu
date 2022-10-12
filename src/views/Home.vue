@@ -31,8 +31,8 @@
             <input disabled type="checkbox" v-on:change="CheckedFunction" onclick="this.disabled = true;">
             <label>{{med.medName}}</label>
           </div>
-          <div style="margin-left:30px">{{med.medQuantity}} 錠</div>
-          <div style="margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
+          <div style="color:gray; margin-left:30px">{{med.medQuantity}} 錠</div>
+          <div style="color:gray; margin-left:30px">{{med.start}} 時から {{med.end}} 時まで</div>
         </div>
         
        </template>
@@ -161,7 +161,7 @@ export default {
     // Vue.jsで使う関数はここで記述する
     isOver(med) {
       const now = new Date();
-      return (med.end < now.getHours());
+      return (med.end <= now.getHours());
     },
     
     MedicalEditHandler(){
