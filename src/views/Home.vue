@@ -174,7 +174,6 @@ export default {
     MedicalEditHandler(){
       this.$router.push('/medicaledit')
     },
-    
     CheckedFunction(){
       if(this.checkCount==3){
          this.checkCount=3;
