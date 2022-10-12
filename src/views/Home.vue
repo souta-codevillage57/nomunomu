@@ -72,6 +72,7 @@ export default {
     // Vue.jsで使う変数はここに記述する
     return {
       checkCount:0,
+      outCount:0,
       flag:false,
       all_meds:[],
       meds:[],
@@ -161,6 +162,12 @@ export default {
     // Vue.jsで使う関数はここで記述する
     isOver(med) {
       const now = new Date();
+      if(med.end <= now.getHours()){
+        this.outCount += 1;
+        if(this.outCount >= 3){
+          this.outCount = 0;
+        }
+      }
       return (med.end <= now.getHours());
     },
     

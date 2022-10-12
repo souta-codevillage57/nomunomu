@@ -101,7 +101,7 @@ export default {
       try{
         //お薬の情報を取得するapi
         const headers = {'Authorization' : 'mtiToken'};
-        const userId = this.meds.userId;
+        const userId = this.med.userId;
         
         const res = await axios.get(baseUrl + `/app-medicines?userId=` + userId,  { headers });
         this.meds = res.data.userMeds;
@@ -113,7 +113,7 @@ export default {
     }, 
     
     async deletemed(med) {
-      const userId = this.meds.userId;
+      const userId = this.med.userId;
       const medName = med.medName;
       const data = {
         userId,
